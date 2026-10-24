@@ -1,0 +1,193 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Ion;src:url(fonts/Ionicons.ttf)}
+@font-face{font-family:MI;src:url(fonts/MaterialIcons.ttf)}
+@font-face{font-family:SG;src:url(fonts/SpaceGrotesk_400Regular.ttf);font-weight:400}
+@font-face{font-family:SG;src:url(fonts/SpaceGrotesk_500Medium.ttf);font-weight:500}
+@font-face{font-family:SG;src:url(fonts/SpaceGrotesk_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:SG;src:url(fonts/SpaceGrotesk_700Bold.ttf);font-weight:700}
+@font-face{font-family:Mono;src:url(fonts/IBMPlexMono_400Regular.ttf);font-weight:400}
+@font-face{font-family:Mono;src:url(fonts/IBMPlexMono_500Medium.ttf);font-weight:500}
+@font-face{font-family:Clock;src:url(fonts/PathwayGothicOne_400Regular.woff2)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100vh;overflow:hidden}
+body{font-family:SG;background:var(--bg);color:var(--text);position:relative}
+.dark{--bg:#15243C;--surface:#233B63;--raised:#294675;--border:#294675;--bi:#4A76A1;--accent:#F3C218;--ink:#F3C218;--text:#FFFFFF;--muted:#93A9C0;--tab:#0F192A;--field:#233B63;--btn:#233B63;--panel:#15243C}
+.light{--bg:#F4F1EC;--surface:#FFFFFF;--raised:#EAEDF2;--border:rgba(19,53,106,.16);--bi:rgba(19,53,106,.55);--accent:#E09A04;--ink:#B07600;--text:#13356A;--muted:rgba(19,53,106,.82);--tab:#FFFFFF;--field:#FFFFFF;--btn:#FFFFFF;--panel:#F4F1EC}
+.ion{font-family:Ion;font-style:normal;line-height:1;display:inline-block}
+.mi{font-family:MI;font-style:normal;line-height:1;display:inline-block}
+.status{height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:13px;font-weight:600;position:relative;z-index:5}
+.status.onCam{position:absolute;left:0;right:0;top:0;color:#fff}
+.vf{position:absolute;left:0;right:0;top:0;height:552px;overflow:hidden;background:#111}
+.vf svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.topbar{position:absolute;left:0;right:0;top:28px;height:52px;display:flex;align-items:center;padding:0 14px;gap:10px;z-index:4;background:linear-gradient(to bottom,rgba(0,0,0,.45),transparent)}
+.brand{display:flex;align-items:center;gap:7px;font-weight:700;font-size:19px;color:#fff}
+.brand img{height:18px}
+.brand span{color:#F3C218}
+.tb{margin-left:auto;display:flex;gap:10px}
+.cbtn{width:42px;height:42px;border-radius:21px;background:rgba(10,18,32,.45);border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
+.cbtn.conf{border:1.5px solid #F3C218;color:#F3C218;border-radius:10px;background:rgba(10,18,32,.45)}
+.side{position:absolute;right:12px;bottom:118px;display:flex;flex-direction:column;gap:12px;z-index:4;align-items:center}
+.zoom{width:42px;height:42px;border-radius:21px;background:rgba(10,18,32,.55);border:1px solid rgba(255,255,255,.3);color:#F3C218;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.stamp{position:absolute;left:16px;bottom:22px;color:#fff;z-index:3;text-shadow:0 1px 3px rgba(0,0,0,.55)}
+.stamp .r1{display:flex;align-items:center;gap:10px}
+.stamp .clk{font-family:Clock;font-size:64px;line-height:.95}
+.stamp .bar{width:2.5px;height:46px;background:#F3C218}
+.stamp .dt{font-size:15px;line-height:1.55;font-weight:500}
+.stamp .addr{display:flex;align-items:center;gap:6px;font-size:14.5px;font-weight:600;margin-top:8px}
+.stamp .addr .ion{color:#F3C218;font-size:16px}
+.gpschip{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12px;font-weight:600;background:rgba(10,18,32,.55);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:5px 10px;text-shadow:none}
+.gpschip i.d{width:7px;height:7px;border-radius:50%;background:#4FB477;display:inline-block}
+.sidecode{position:absolute;right:6px;top:120px;writing-mode:vertical-rl;font-family:Mono;font-size:10.5px;letter-spacing:1.5px;color:#fff;opacity:.85;text-shadow:0 1px 2px rgba(0,0,0,.7);z-index:3}
+.grid{position:absolute;inset:0;z-index:2;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:131px 184px;background-position:-1px -1px}
+.panel{position:absolute;left:0;right:0;top:552px;bottom:62px;background:var(--panel);display:flex;flex-direction:column;align-items:center}
+.modes{display:flex;gap:22px;margin-top:22px;font-size:14.5px;font-weight:600;color:var(--muted)}
+.modes .on{color:var(--text);position:relative}
+.modes .on:after{content:'';position:absolute;left:50%;bottom:-8px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--ink)}
+.shRow{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 34px;margin-top:34px}
+.thumb{width:48px;height:48px;border-radius:10px;overflow:hidden;border:2px solid var(--bi)}
+.thumb svg{width:100%;height:100%}
+.shutter{width:82px;height:82px;border-radius:50%;border:5px solid var(--text);display:flex;align-items:center;justify-content:center}
+.shutter i{width:64px;height:64px;border-radius:50%;background:var(--accent);display:block}
+.shutter.rec i{width:30px;height:30px;border-radius:7px;background:#E5393B}
+.flip{width:48px;height:48px;border-radius:24px;border:1.5px solid var(--bi);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text);background:var(--btn)}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:62px;background:var(--tab);border-top:1px solid var(--border);display:flex;padding-top:8px;z-index:6}
+.tabs div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11.5px;color:var(--muted)}
+.tabs .ion{font-size:24px}
+.tabs .on{color:var(--ink)}
+.tabs .on span:last-child{color:var(--text)}
+.recpill{position:absolute;top:88px;left:50%;transform:translateX(-50%);z-index:4;background:rgba(10,18,32,.6);color:#fff;border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.recpill i{width:9px;height:9px;border-radius:50%;background:#E5393B}
+.recpill small{color:#C7D6E4;font-weight:500}
+/* after shot */
+.hdr{height:48px;display:flex;align-items:center;gap:10px;padding:0 16px}
+.hdr .back{font-size:24px}
+.hdr b{font-size:18px;font-weight:600}
+.hdr .new{margin-left:auto;display:flex;align-items:center;gap:6px;font-weight:600;font-size:14px;color:var(--ink)}
+.wrap{padding:0 20px}
+.pv{height:300px;border-radius:16px;overflow:hidden;position:relative;background:#111}
+.pv svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.pv .stamp .clk{font-size:52px}.pv .stamp .bar{height:38px}.pv .stamp .dt{font-size:13px}.pv .stamp .addr{font-size:12.5px}
+.pv .stamp{left:12px;bottom:14px}
+.pv .sidecode{top:70px;font-size:9.5px}
+.sec{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.st{font-family:Mono;font-size:13px;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted)}
+.ibtn{width:42px;height:42px;border:1.5px solid var(--bi);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:24px}
+.lab{font-size:13px;color:var(--muted);margin:10px 0 6px}
+.row{display:flex;gap:12px}
+.fld{height:50px;border-radius:8px;background:var(--field);border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;font-size:15.5px}
+.fld.addr{height:auto;min-height:62px;padding:9px 14px;line-height:1.35;font-size:15px;flex:1}
+.mic{width:54px;height:54px;border-radius:50%;background:var(--accent);color:#12224A;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;align-self:center}
+.ahint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4}
+.btnP{height:50px;border-radius:10px;background:var(--accent);color:#12224A;font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px;flex:1}
+.btnG{height:50px;border-radius:10px;border:1.5px solid var(--bi);font-weight:700;font-size:15.5px;display:flex;align-items:center;justify-content:center;gap:8px;flex:1}
+.flashshot{position:absolute;inset:0;background:rgba(255,255,255,.0)}
+.row.dt{gap:8px}.row.dtl{gap:8px}.row.dtl .lab{margin:12px 0 6px}.fld.p{height:50px;padding:0 12px;white-space:nowrap;overflow:hidden;min-width:0}.ibtn.sq{width:50px;height:50px;flex:none;border-radius:8px}.hh{flex:none;width:70px}.ww{flex:none;width:60px}.dd{flex:1;min-width:0}.fld.p{justify-content:center;padding:0 8px}.ahint.below{margin-top:14px;text-align:center;padding:0 8px}.ahint.warn{color:var(--ink)}.phx{color:var(--muted)}.link{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:8px;font-weight:600;font-size:14px;color:var(--ink);text-decoration:underline;text-underline-offset:3px}.link .ion{font-size:16px}.col{position:absolute;left:0;right:0;top:76px;bottom:62px;display:flex;flex-direction:column;padding:0 20px 12px}
+.pv2{flex:1;min-height:0;border-radius:16px;background:#0B1220;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.phbox{position:relative;overflow:hidden;border-radius:4px}
+.phbox svg.scene{position:absolute;inset:0;width:100%;height:100%}
+.stamp.s2{left:12px;bottom:12px;transform-origin:left bottom;transform:scale(var(--s,1))}
+.stamp.s2 .clk{font-size:52px}.stamp.s2 .bar{height:38px}.stamp.s2 .dt{font-size:13px}.stamp.s2 .addr{font-size:12.5px}
+.sidecode.s2{top:auto;bottom:40%;font-size:9.5px}
+.form{flex:none;padding-top:12px}
+.fld.amber{border:1.5px solid var(--ink)}
+.ahint.below{margin-top:12px}
+.ahdr{height:44px;display:flex;align-items:center;gap:8px;padding:0 20px}.ahdr img{height:19px}.ahdr b{font-size:20px;font-weight:700}.ahdr b span{color:var(--ink)}.dark .ahdr b span{color:#F3C218}
+.col.c5{top:72px}
+.pv2.empty{background:#233B63;justify-content:center}
+.phx2{display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.55);font-size:13px;margin-bottom:50px}.phx2 .ion{font-size:34px}
+.pv2.empty .stamp.s2{position:absolute}
+.acts{display:flex;gap:10px}
+.blk{flex:1;height:60px;border-radius:10px;border:1.5px solid var(--bi);background:var(--btn);display:flex;align-items:center;justify-content:center;color:var(--text)}
+.light .blk{color:#B07600}
+.blk .ion{font-size:24px}
+.blk.cam{background:var(--raised)}
+.light .blk.cam{background:#FCEFD2;border-color:#B07600}
+.dark .blk.cam{background:#294675}
+.blk.sel{box-shadow:inset 0 0 0 2px var(--ink)}
+.blk.conf{border-color:var(--ink);background:transparent;color:var(--ink)}.blk.conf .ion{font-size:27px}
+.sep{width:1px;background:var(--border);margin:8px 0}
+.fld.addr.off{opacity:.55;display:flex;align-items:center;gap:8px;color:var(--muted)}.fld.addr.off .ion{font-size:16px}
+.mic.off{background:var(--raised);color:var(--muted);opacity:.6}
+.row.dis>div{opacity:.4}
+.play{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(10,18,32,.55);border:2px solid rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;padding-left:4px}
+.dur{position:absolute;right:10px;top:10px;background:rgba(10,18,32,.6);color:#fff;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:600;display:flex;gap:6px;align-items:center;font-variant-numeric:tabular-nums}.dur .ion{font-size:14px}
+.form .ahint.below{min-height:34px}
+.col.before{bottom:62px}.col.before .pv2.empty.tall{flex:1;min-height:420px}.col.before .phx2{margin-bottom:80px}
+.form.compact{padding-top:14px}
+.form.compact .ahint.below{margin-top:14px;text-align:center}
+.ahdr{justify-content:flex-start}
+.ahdr .ibtn.sq{width:36px;height:36px;font-size:20px;border-radius:18px}
+</style></head><body><div id="app"></div>
+<script>
+const G={"flash-off-outline": 62232, "play": 62662, "download-outline": 62138, "settings": 62827, "shield-checkmark-outline": 62841, "location-outline": 62405, "share-social-outline": 62837, "lock-closed-outline": 62408, "sunny-outline": 62916, "eye-outline": 62186, "eye-off-outline": 62184, "camera": 61915, "mic": 62548, "camera-reverse-outline": 61918, "videocam": 62989, "images": 62353};
+const P=new URLSearchParams(location.search);const theme=P.get('theme')||'dark';const frame=P.get('frame')||'viewfinder';let hideMeta=false; // start open; toggle sets true to hide
+document.body.className=theme;
+const I=(n,cls='ion')=>`<i class="${cls}">${String.fromCodePoint(G[n])}</i>`;
+const svgScreen=`<svg viewBox="0 0 24 24" width="22" height="22"><g fill="currentColor" fill-rule="evenodd"><path d="M7.8 1.5H16.2a2.8 2.8 0 0 1 2.8 2.8V19.7a2.8 2.8 0 0 1 -2.8 2.8H7.8a2.8 2.8 0 0 1 -2.8 -2.8V4.3a2.8 2.8 0 0 1 2.8 -2.8ZM8 4H16a1 1 0 0 1 1 1V19a1 1 0 0 1 -1 1H8a1 1 0 0 1 -1 -1V5a1 1 0 0 1 1 -1Z"/><path d="M11.3 7.4a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z"/></g></svg>`;
+const svgVideo=`<svg viewBox="0 0 24 24" width="22" height="22"><g fill="currentColor" fill-rule="evenodd"><path d="M3.2 6.6a3 3 0 1 0 6 0a3 3 0 1 0 -6 0ZM5.1 6.6a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0Z"/><path d="M8.4 5.4a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0ZM11.1 5.4a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0 -3 0Z"/><path d="M3.1 10.3H14.2a1.6 1.6 0 0 1 1.6 1.6V17.4a1.6 1.6 0 0 1 -1.6 1.6H3.1a1.6 1.6 0 0 1 -1.6 -1.6V11.9a1.6 1.6 0 0 1 1.6 -1.6Z"/><path d="M16.6 13.2L22.2 10.4V18.6L16.6 15.8Z"/></g></svg>`;
+// fictitious scene: storefront / facade in daylight
+function scene(id,par="xMidYMid slice"){return `<svg class="scene" viewBox="0 0 393 552" preserveAspectRatio="${par}"><defs><linearGradient id="sk${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FA9CF"/><stop offset="1" stop-color="#CFE0EE"/></linearGradient><linearGradient id="sh${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></linearGradient></defs>
+<rect width="393" height="552" fill="url(#sk${id})"/>
+<rect x="20" y="90" width="230" height="380" fill="#C9B79C"/><rect x="250" y="140" width="143" height="330" fill="#9AA7B4"/>
+${Array.from({length:12},(_,i)=>`<rect x="${40+(i%3)*70}" y="${115+Math.floor(i/3)*62}" width="44" height="40" fill="#5D7186" stroke="#EDE6DA" stroke-width="4"/>`).join('')}
+${Array.from({length:8},(_,i)=>`<rect x="${268+(i%2)*60}" y="${160+Math.floor(i/2)*58}" width="40" height="38" fill="#4C5E70"/>`).join('')}
+<rect x="40" y="370" width="190" height="100" fill="#3B4A57"/><rect x="40" y="356" width="190" height="16" fill="#B07600"/><text x="135" y="368" text-anchor="middle" font-family="SG" font-weight="700" font-size="11" fill="#fff">PADARIA ACÁCIAS</text>
+<rect x="110" y="390" width="50" height="80" fill="#2A3540"/>
+<rect x="0" y="470" width="393" height="82" fill="#8C8C86"/><rect x="0" y="470" width="393" height="6" fill="#6E6E68"/>
+<rect x="0" y="380" width="393" height="172" fill="url(#sh${id})"/></svg>`}
+const statusBar=(cam)=>`<div class="status ${cam?'onCam':''}"><span>14:37</span><span style="font-size:12px;letter-spacing:2px">▼ ◢ ▮</span></div>`;
+const tabs=`<div class="tabs"><div class="on">${I('camera')}<span>Capturar</span></div><div>${I('images')}<span>Galeria</span></div><div>${I('settings')}<span>Configurações</span></div></div>`;
+const CODE='5D2A7F90C1E4';
+function viewfinder(rec){
+ return `<div class="vf">${scene('v')}<div class="grid"></div>
+ <div class="topbar"><div class="brand"><img src="ly-logo-contorno-transparente.svg"><b style="font-weight:700">Ly<span>mark</span></b></div><div class="tb"><div class="cbtn">${I('flash-off-outline')}</div><div class="cbtn conf" aria-label="Conferir uma foto">${I('shield-checkmark-outline')}</div></div></div>
+ ${rec?`<div class="recpill"><i></i>00:12 <small>/ 03:00</small></div>`:''}
+ <div class="sidecode">${CODE}</div>
+ <div class="side"><div class="zoom">1×</div></div>
+ <div class="stamp"><div class="r1"><span class="clk">14:37</span><span class="bar"></span><span class="dt">18 out. 2026<br>Dom</span></div>
+ <div class="gpschip"><i class="d"></i>GPS ±8 m · o endereço entra após a ${rec?'gravação':'foto'}</div></div>
+ </div>${statusBar(true)}
+ <div class="panel"><div class="modes"><span class="${rec?'':'on'}">Foto</span><span class="${rec?'on':''}">Vídeo</span><span>Tela</span></div>
+ <div class="shRow"><div class="thumb">${scene('t')}</div><div class="shutter ${rec?'rec':''}"><i></i></div><div class="flip">${I('camera-reverse-outline')}</div></div></div>${tabs}`}
+function fixed(st){
+ const shot=st!=='before';
+ const vid=st==='video';
+ const collapsed=!shot && hideMeta;
+ const t=shot?['14:37','18 out. 2026','Dom']:['14:41','18 out. 2026','Dom'];
+ const stamp=`<div class="stamp s2"><div class="r1"><span class="clk">${t[0]}</span><span class="bar"></span><span class="dt">${t[1]}<br>${t[2]}</span></div>${shot?`<div class="addr">${I('location-outline')}R. das Acácias, 98 · Curitiba</div>`:''}</div>`;
+ const pv=shot
+   ?`<div class="pv2"><div class="phbox">${scene('p','xMidYMid slice')}<div class="sidecode s2">${CODE}</div>${stamp}${vid?`<div class="play">${I('play')}</div><div class="dur">${I('videocam')}00:42</div>`:''}</div></div>`
+   :`<div class="pv2 empty tall"><div class="phx2">${I('camera')}<span>Tire uma foto para carimbar</span></div>${stamp}</div>`;
+ const hideBtn=shot
+   ?`<div class="blk conf" aria-label="Conferir uma foto">${I('shield-checkmark-outline')}</div>`
+   :`<div class="blk conf ${collapsed?'sel':''}" aria-label="Ocultar data e endereço">${I('eye-off-outline')}</div>`;
+ const meta=shot?`<div class="row dt" style="margin-top:10px"><div class="fld p hh" aria-label="Hora">${t[0]}</div><div class="fld p dd" aria-label="Data">${t[1]}</div><div class="fld p ww" aria-label="Dia">${t[2]}</div><span class="ibtn sq" aria-label="Usar data e hora de agora"><i class="mi">&#59683;</i></span></div>
+   <div class="row" style="margin-top:10px"><div class="fld addr">R. das Acácias, 98 - Batel, Curitiba - PR</div><div class="mic">${I('mic')}</div></div>`
+   :(collapsed?'':`<div class="row dt" style="margin-top:10px"><div class="fld p hh" aria-label="Hora">${t[0]}</div><div class="fld p dd" aria-label="Data">${t[1]}</div><div class="fld p ww" aria-label="Dia">${t[2]}</div><span class="ibtn sq" aria-label="Usar data e hora de agora"><i class="mi">&#59683;</i></span></div>
+   <div class="row" style="margin-top:10px"><div class="fld addr off">${I('lock-closed-outline')}<span>Disponível depois da foto</span></div><div class="mic off">${I('mic')}</div></div>`);
+ const hint=shot
+   ?`<div class="ahint below">Hora e data do aparelho · sem edição manual. Precisão estimada pelo sistema operacional: 8 m.</div>`
+   :`<div class="ahint below">${collapsed?'Data e endereço ocultos · toque no olho para mostrar.':'Tire uma foto ou grave um vídeo para habilitar as ações.'}</div>`;
+ return `${statusBar(false)}<div class="ahdr"><div style="display:flex;align-items:center;gap:8px;flex:1"><img src="ly-logo-contorno-transparente.svg"><b>Ly<span>mark</span></b></div><div style="font-size:13px;color:var(--muted);font-weight:600">1/15 · Ver planos</div><div class="ibtn sq" style="margin-left:8px;color:var(--ink)" aria-label="Tema"><i class="mi">&#xe430;</i></div></div>
+ <div class="col c5 ${shot?'':'before'} ${collapsed?'collapsed':''}">
+  ${pv}
+  <div class="form ${collapsed?'compact':''}">
+   <div class="acts"><div class="blk cam" aria-label="Tirar foto">${I('camera')}</div><div class="blk ${vid?'sel':''}" aria-label="Gravar vídeo">${svgVideo}</div><div class="blk" aria-label="Gravar a tela">${svgScreen}</div><div class="sep"></div>${hideBtn}</div>
+   ${meta}
+   <div class="row ${shot?'':'dis'}" style="margin-top:12px"><div class="btnP">${I('download-outline')}Salvar</div><div class="btnG">${I('share-social-outline')}Compartilhar</div></div>
+   ${hint}
+  </div>
+ </div>${tabs}`}
+const F={before:()=>fixed('before'),photo:()=>fixed('photo'),video:()=>fixed('video')};
+function render(){
+ document.getElementById('app').innerHTML=F['before']();
+ const btn=document.querySelector('.blk.conf');
+ if(btn){
+  btn.style.cursor='pointer';
+  btn.addEventListener('click',(e)=>{e.preventDefault();hideMeta=!hideMeta;render();});
+ }
+ document.body.dataset.ready='1';
+}
+document.fonts.ready.then(()=>render());
+</script></body></html>
